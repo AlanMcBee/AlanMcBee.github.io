@@ -1,4 +1,5 @@
 # AlanMcBee GitHub Pages
 
-- (AzureMaps.schema.json)
-- (SoftwareStore.schema.json)
+JSON/YAML Schemas:
+- [AzureMap](AzureMap.schema.json)
+- [SoftwareStore](SoftwareStore.schema.json)
