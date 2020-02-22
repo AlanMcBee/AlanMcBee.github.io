@@ -1,0 +1,57 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "$id": "SoftwareStore-schema.json",
+    "title": "SoftwareStore: AlanM's software list",
+    "description": "The SoftwareStore is the file that tracks all of the software that I might like to put on my system",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+        "$schema": {
+            "type": "string"
+        },
+        "store": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "required": [
+                    "package"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                    "package": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                            "name": {
+                                "type": "string"
+                            },
+                            "sourceUrl": {
+                                "type": "string"
+                            },
+                            "description": {
+                                "type": "string"
+                            },
+                            "sourceCodeUrl": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "defaultSnippets": [
+                    {
+                        "label": "New package",
+                        "description": "Creates a new software package entry",
+                        "body": {
+                            "package": {
+                                "name": "${1:human-name-for-software-package}",
+                                "sourceUrl": "${2:url-to-downloadable-assets}",
+                                "description": "${3:optional-one-sentence}",
+                                "sourceCodeUrl": "${4:optional-url-to-source-code}"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    }
+}
