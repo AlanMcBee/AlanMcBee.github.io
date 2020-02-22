@@ -1,6 +1,6 @@
 {
     "$schema": "https://json-schema.org/draft/2019-09/schema",
-    "$id": "SoftwareStore-schema.json",
+    "$id": "https://alanmcbee.github.io/SoftwareStore-schema.json",
     "title": "SoftwareStore: AlanM's software list",
     "description": "The SoftwareStore is the file that tracks all of the software that I might like to put on my system",
     "type": "object",
