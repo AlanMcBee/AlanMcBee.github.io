@@ -1,0 +1,103 @@
+{
+  "$schema": "http://json-schema.org/draft/2019-09/schema",
+  "$id": "https://AlanMcBee.github.io/AzureMap.schema.json",
+  "type": "object",
+  "title": "AzureMap",
+  "required": [
+    "SubscriptionMap",
+    "TenantMap"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "TenantMap": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "patternProperties": {
+          "^[a-zA-Z][a-zA-Z0-9_]*$": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "TenantId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "TenantName": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "TenantId",
+              "TenantName"
+            ],
+            "title": "TenantEntry"
+          }
+        },
+        "title": "TenantMap",
+        "defaultSnippets": [
+          {
+            "label": "New TenantKey",
+            "description": "Create a new TenantKey entry",
+            "body": {
+              "${1:new-tenant-key}": {
+                "TenantId": "${2:guid-from-AAD}",
+                "TenantName": "${3:tenant-name}.onmicrosoft.com"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "SubscriptionMap": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "patternProperties": {
+          "^[a-zA-Z][a-zA-Z0-9_]*$": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "SubscriptionId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "Tenant": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "SubscriptionId",
+              "Tenant"
+            ],
+            "title": "SubscriptionEntry"
+          }
+        },
+        "title": "SubscriptionMap",
+        "defaultSnippets": [
+          {
+            "label": "New SubscriptionKey",
+            "description": "Create a new SubscriptionKey entry",
+            "body": {
+              "${1:new-subscription-key}": {
+                "SubscriptionId": "${2:guid-from-Azure}",
+                "Tenant": "${3:#/TenantMap/TenantKey}"
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}
