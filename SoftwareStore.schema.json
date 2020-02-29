@@ -1,14 +1,12 @@
 {
     "$schema": "https://json-schema.org/draft/2019-09/schema",
-    "$id": "https://alanmcbee.github.io/SoftwareStore.schema.json",
+    "$id": "https://alanmcbee.github.io/SoftwareStore-2020-20-26T12-56.schema.json",
     "title": "SoftwareStore: AlanM's software list",
     "description": "The SoftwareStore is the file that tracks all of the software that I might like to put on my system",
     "type": "object",
     "additionalProperties": false,
     "properties": {
-        "$schema": {
-            "type": "string"
-        },
+        "$schema": { "type": "string" },
         "store": {
             "type": "array",
             "items": {
@@ -22,20 +20,40 @@
                         "type": "object",
                         "additionalProperties": false,
                         "properties": {
-                            "name": {
+                            "name": { "type": "string" },
+                            "sku": { "type": "string" },
+                            
+                            "class": {
+                                "type": "string",
+                                "enum": [ "unknown", "IDE", "Install", "Module", "SDK", "Security", "Shell", "Storage", "Tool", "UserAgent" ]
+                            },
+                            "source": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "anyOf": [
+                                        {
+                                            "$ref": "#/definitions/script"
+                                        }
+                                    ]
+                                }
+                            },
+                            "description": { "type": "string" },
+                            "sourceCodeUrl": { "type": "string" },
+                            "documentation": {
+                                "type": "object",
+                                "properties": {
+                                    "url": { "type": "string" }
+                                }
+                            },
+                            "platform": {
                                 "type": "string"
                             },
-                            "sourceUrl": {
+                            "keywords": {
                                 "type": "array",
                                 "items": {
                                     "type": "string"
                                 }
-                            },
-                            "description": {
-                                "type": "string"
-                            },
-                            "sourceCodeUrl": {
-                                "type": "string"
                             }
                         }
                     }
@@ -55,6 +73,11 @@
                     }
                 ]
             }
+        }
+    },
+    "definitions": {
+        "script": {
+            "type": "object"
         }
     }
 }
