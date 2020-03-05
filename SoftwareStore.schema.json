@@ -1,83 +1,185 @@
 {
     "$schema": "https://json-schema.org/draft/2019-09/schema",
     "$id": "https://alanmcbee.github.io/SoftwareStore-2020-20-26T12-56.schema.json",
+    "$comment": "For the defaultSnippets, see https://code.visualstudio.com/docs/editor/userdefinedsnippets#_creating-your-own-snippets, https://code.visualstudio.com/api/language-extensions/snippet-guide, and https://code.visualstudio.com/docs/editor/userdefinedsnippets#_snippet-syntax",
     "title": "SoftwareStore: AlanM's software list",
     "description": "The SoftwareStore is the file that tracks all of the software that I might like to put on my system",
     "type": "object",
-    "additionalProperties": false,
     "properties": {
         "$schema": { "type": "string" },
-        "store": {
+        "store": { "$ref": "#/definitions/packageList" }
+    },
+    "additionalProperties": false,
+    "definitions": {
+        "packageList": {
             "type": "array",
             "items": {
                 "type": "object",
-                "required": [
-                    "package"
-                ],
-                "additionalProperties": false,
-                "properties": {
-                    "package": {
-                        "type": "object",
-                        "additionalProperties": false,
-                        "properties": {
-                            "name": { "type": "string" },
-                            "sku": { "type": "string" },
-                            
-                            "class": {
-                                "type": "string",
-                                "enum": [ "unknown", "IDE", "Install", "Module", "SDK", "Security", "Shell", "Storage", "Tool", "UserAgent" ]
-                            },
-                            "source": {
-                                "type": "array",
-                                "items": {
-                                    "type": "object",
-                                    "anyOf": [
-                                        {
-                                            "$ref": "#/definitions/script"
-                                        }
-                                    ]
-                                }
-                            },
-                            "description": { "type": "string" },
-                            "sourceCodeUrl": { "type": "string" },
-                            "documentation": {
-                                "type": "object",
-                                "properties": {
-                                    "url": { "type": "string" }
-                                }
-                            },
-                            "platform": {
-                                "type": "string"
-                            },
-                            "keywords": {
-                                "type": "array",
-                                "items": {
-                                    "type": "string"
-                                }
-                            }
-                        }
-                    }
+                "properties": { 
+                    "package": { "$ref": "#/definitions/package"} 
                 },
+                "additionalProperties": false,
                 "defaultSnippets": [
                     {
                         "label": "New package",
                         "description": "Creates a new software package entry",
-                        "body": {
+                        "body": [{
                             "package": {
                                 "name": "${1:human-name-for-software-package}",
-                                "sourceUrl": "${2:url-to-downloadable-assets}",
-                                "description": "${3:optional-one-sentence}",
-                                "sourceCodeUrl": "${4:optional-url-to-source-code}"
+                                "sku": "${2:reverse-domain-unique-id}",
+                                "source": "${3:where-to-download}"
                             }
-                        }
+                        }]
                     }
                 ]
             }
-        }
-    },
-    "definitions": {
-        "script": {
-            "type": "object"
+        },
+        "package": {
+            "type": "object",
+            "properties": {
+                "name": { "type": "string" },
+                "sku": { "type": "string" },
+                "class": {
+                    "type": "string",
+                    "enum": ["unknown", "IDE", "Install", "Module", "SDK", "Security", "Shell", "Storage", "Suite", "Tool", "UserAgent"]
+                },
+                "source": { "$ref": "#/definitions/sourceList" },
+                "description": { "type": "string" },
+                "sourceCodeUrl": { "type": "string" },
+                "documentation": {
+                    "type": "object",
+                    "properties": {
+                        "url": { 
+                            "type": "string",
+                            "format": "uri"
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                "platform": {
+                    "type": "array",
+                    "items": { "$ref": "#/definitions/platformList" }
+                },
+                "subsystem": {
+                    "type": "string",
+                    "enum": ["CUI", "GUI", "multiple"]
+                },
+                "keywords": {
+                    "type": "array",
+                    "items": { "type": "string" }
+                },
+                "packages": { "$ref": "#/definitions/packageList" },
+                "owner": { "type": "string" },
+                "version": { "$ref": "#/definitions/version" },
+                "released": {
+                    "type": "string",
+                    "format": "date"
+                },
+                "homepage": {
+                    "type": "string",
+                    "format": "uri"
+                }
+            },
+            "required": [ "name" ],
+            "additionalProperties": false
+        },
+        "sourceList": {
+            "type": "object",
+            "properties": {
+                "script": {
+                    "type": "object",
+                    "properties": {
+                        "cmd": { "type": "string" },
+                        "powershell": { "type": "string" },
+                        "pwsh": { "type": "string" },
+                        "posh": { "type": "string" }
+                    },
+                    "minProperties": 1,
+                    "additionalProperties": false
+                },
+                "chocolatey": {
+                    "type": "object",
+                    "properties": {
+                        "id": { "type": "string" },
+                        "args": { "type": "string" }
+                    },
+                    "required": [ "id" ],
+                    "dependencies": {
+                        "args": [ "id" ]
+                    },
+                    "additionalProperties": false
+                },
+                "web": {
+                    "type": "object",
+                    "properties": {
+                        "url": { 
+                            "type": "string",
+                            "format": "uri"
+                        }
+                    },
+                    "additionalProperties": false
+                }
+            },
+            "additionalProperties": false
+        },
+        "version": {
+            "type": ["number", "string"],
+            "pattern": "^(\\d+\\.){0,3}\\d+$"
+        },
+        "platformList": {
+            "type": "object",
+            "properties": {
+                "Windows": {
+                    "type": "object",
+                    "properties": {
+                        "version": { "$ref": "#/definitions/version" },
+                        "machine": {
+                            "type": "string",
+                            "enum": [ "16b", "32b", "64b", "32b64b" ]
+                        },
+                        "edition": {
+                            "type": "string",
+                            "enum": [ "Any", "Home", "HomeOrPro", "Pro", "ProOrServer", "Server", "Nano", "ARM64" ]
+                        },
+                        "source": { "$ref": "#/definitions/sourceList" }
+                    },
+                    "required": [ "edition" ],
+                    "additionalProperties": false
+                },
+                "unix": {
+                    "type": "object",
+                    "properties": {
+                        "distro": {
+                            "type": "string",
+                            "enum": [ "ubuntu", "debian" ]
+                        },
+                        "version": { "$ref": "#/definitions/version" },
+                        "machine": {
+                            "type": "string",
+                            "enum": [ "32b", "64b" ]
+                        },
+                        "source": { "$ref": "#/definitions/sourceList" }
+                    },
+                    "additionalProperties": false
+                },
+                "VisualStudio": {
+                    "type": "object",
+                    "properties": {
+                        "source": { "$ref": "#/definitions/sourceList" }
+                    },
+                    "additionalProperties": false
+                },
+                "VisualStudioCode": {
+                    "type": "object",
+                    "properties": {
+                        "source": { "$ref": "#/definitions/sourceList" }
+                    },
+                    "additionalProperties": false
+                }
+            },
+            "minProperties": 1,
+            "maxProperties": 1,
+            "additionalProperties": false
         }
     }
 }
