@@ -140,9 +140,6 @@
                         },
                         "pwsh": {
                             "type": "string"
-                        },
-                        "posh": {
-                            "type": "string"
                         }
                     },
                     "minProperties": 1,
@@ -193,6 +190,13 @@
                         }
                     },
                     "required": ["packageName"],
+                    "additionalProperties": false
+                },
+                "pip": {
+                    "type": "object",
+                    "properties": {
+                        "packageName": { "type": "string" }
+                    },
                     "additionalProperties": false
                 }
             },
