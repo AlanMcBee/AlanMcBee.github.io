@@ -1,17 +1,13 @@
 {
     "$schema": "https://json-schema.org/draft/2019-09/schema",
-    "$id": "https://alanmcbee.github.io/SoftwareStore-2020-03-18T14-26.schema.json",
+    "$id": "https://alanmcbee.github.io/SoftwareStore-2020-03-19T11-08.schema.json",
     "$comment": "For the defaultSnippets, see https://code.visualstudio.com/docs/editor/userdefinedsnippets#_creating-your-own-snippets, https://code.visualstudio.com/api/language-extensions/snippet-guide, and https://code.visualstudio.com/docs/editor/userdefinedsnippets#_snippet-syntax",
     "title": "SoftwareStore: AlanM's software list",
     "description": "The SoftwareStore is the file that tracks all of the software that I might like to put on my system",
     "type": "object",
     "properties": {
-        "$schema": {
-            "type": "string"
-        },
-        "store": {
-            "$ref": "#/definitions/packageList"
-        }
+        "$schema": { "type": "string" },
+        "store": { "$ref": "#/definitions/packageList" }
     },
     "additionalProperties": false,
     "definitions": {
@@ -20,9 +16,7 @@
             "items": {
                 "type": "object",
                 "properties": {
-                    "package": {
-                        "$ref": "#/definitions/package"
-                    }
+                    "package": { "$ref": "#/definitions/package" }
                 },
                 "additionalProperties": false,
                 "defaultSnippets": [{
@@ -41,76 +35,50 @@
         "package": {
             "type": "object",
             "properties": {
-                "name": {
-                    "type": "string"
-                },
-                "sku": {
-                    "type": "string"
-                },
+                "name": { "type": "string" },
+                "sku": { "type": "string" },
                 "class": {
                     "type": "string",
                     "enum": ["unknown", "IDE", "Install", "Module", "SDK", "Security", "Shell", "Storage", "Suite", "Tool", "UserAgent"]
                 },
-                "source": {
-                    "$ref": "#/definitions/sourceList"
-                },
+                "source": { "$ref": "#/definitions/sourceList" },
                 "description": {
-                    "type": "string"
+                    "oneOf": [
+                        { "type": "string" },
+                        {
+                            "type": "array",
+                            "items": { "type": "string" }
+                        }
+                    ]
                 },
-                "sourceCodeUrl": {
-                    "type": "string"
-                },
+                "sourceCodeUrl": { "type": "string", "format": "uri" },
                 "documentation": {
                     "type": "object",
                     "properties": {
-                        "url": {
-                            "type": "string",
-                            "format": "uri"
-                        }
+                        "url": { "type": "string", "format": "uri" }
                     },
                     "additionalProperties": false
                 },
                 "platform": {
                     "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/platformList"
-                    }
+                    "items": { "$ref": "#/definitions/platformList" }
                 },
                 "subsystem": {
                     "type": "string",
-                    "enum": ["CUI", "GUI", "multiple"]
+                    "enum": ["CLI", "GUI", "WDF", "multiple"]
                 },
                 "keywords": {
                     "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
+                    "items": { "type": "string" }
                 },
-                "packages": {
-                    "$ref": "#/definitions/packageList"
-                },
-                "owner": {
-                    "type": "string"
-                },
-                "version": {
-                    "$ref": "#/definitions/version"
-                },
-                "released": {
-                    "type": "string",
-                    "format": "date"
-                },
-                "homepage": {
-                    "type": "string",
-                    "format": "uri"
-                },
-                "obsolete": {
-                    "type": "string",
-                    "format": "date"
-                },
-                "note": {
-                    "type": "array",
-                    "items": { "type": "string"}
-                },
+                "packages": { "$ref": "#/definitions/packageList" },
+                "components": { "$ref": "#/definitions/packageList" },
+                "owner": { "type": "string" },
+                "version": { "$ref": "#/definitions/version" },
+                "released": { "type": "string", "format": "date" },
+                "homepage": { "type": "string", "format": "uri" },
+                "obsolete": { "type": "string", "format": "date" },
+                "note": { "type": "array", "items": { "type": "string" } },
                 "runtime": {
                     "type": "array",
                     "items": {
@@ -132,15 +100,9 @@
                 "script": {
                     "type": "object",
                     "properties": {
-                        "cmd": {
-                            "type": "string"
-                        },
-                        "powershell": {
-                            "type": "string"
-                        },
-                        "pwsh": {
-                            "type": "string"
-                        }
+                        "cmd": { "type": "string" },
+                        "powershell": { "type": "string" },
+                        "pwsh": { "type": "string" }
                     },
                     "minProperties": 1,
                     "additionalProperties": false
@@ -148,9 +110,7 @@
                 "chocolatey": {
                     "type": "object",
                     "properties": {
-                        "id": {
-                            "type": "string"
-                        },
+                        "id": { "type": "string" },
                         "args": {
                             "type": "object",
                             "properties": {
@@ -175,19 +135,14 @@
                 "web": {
                     "type": "object",
                     "properties": {
-                        "url": {
-                            "type": "string",
-                            "format": "uri"
-                        }
+                        "url": { "type": "string", "format": "uri" }
                     },
                     "additionalProperties": false
                 },
                 "appx": {
                     "type": "object",
                     "properties": {
-                        "packageName": {
-                            "type": "string"
-                        }
+                        "packageName": { "type": "string" }
                     },
                     "required": ["packageName"],
                     "additionalProperties": false
@@ -276,44 +231,44 @@
         "windowsVersion": {
             "type": "string",
             "enum": [
-                "NT_10.0_14393 | Windows Server 2016 | 2016-10-12",
-                "NT_10.0_17763 | Windows Server 2019 | 2018-11-13",
-                "NT_10.0_1909 | Windows 10 | 2015-07-15",
-                "NT_3.1_528 | Windows NT 3.1 | 1993-07-27",
-                "NT_3.5_807 | Windows NT 3.5 | 1994-09-21",
-                "NT_3.51_1057 | Windows NT 3.51 | 1995-05-30",
-                "NT_4.0_1381 | Windows NT 4.0 | 1996-07-31",
-                "NT_5.0_2195 | Windows 2000 | 1999-12-15",
-                "NT_5.1 | Windows XP Media Center | 2002-00-00",
-                "NT_5.1 | Windows XP Tablet PC | 2002-11-00",
-                "NT_5.1_2600 | Windows XP | 2001-08-24",
-                "NT_5.2_3790 | Windows Server 2003 | 2003-04-24",
-                "NT_5.2_3790 | Windows Server 2003 R2 | 2005-12-06",
-                "NT_5.2_3790 | Windows XP Pro x64 | 2005-04-25",
-                "NT_6.0_6002 | Windows Vista | 2006-11-08",
-                "NT_6.0_6003 | Windows Server 2008 | 2008-02-27",
-                "NT_6.1_7601 | Windows 7 | 2009-07-22",
-                "NT_6.1_7601 | Windows Server 2008 R2 | 2009-10-22",
-                "NT_6.2 | Windows RT | 2012-10-26",
-                "NT_6.2_9200 | Windows 8 | 2012-08-01",
-                "NT_6.2_9200 | Windows Server 2012 | 2012-09-04",
-                "NT_6.3 | Windows RT 8.1 | 2013-10-18",
-                "NT_6.3_9600 | Windows 8.1 | 2013-08-27",
-                "NT_6.3_9600 | Windows Server 2012 R2 | 2013-10-17",
-                "Win1.01 | Windows 1.0 | 1985-11-20",
-                "Win1.02 | Windows 1.02 | 1986-05-14",
-                "Win1.03 | Windows 1.03 | 1986-08-21",
-                "Win1.04 | Windows 1.04 | 1987-04-10",
-                "Win2.03 | Windows 2.03 | 1987-12-09",
-                "Win2.10 | Windows 2.10 | 1988-05-27",
-                "Win2.11 | Windows 2.11 | 1989-03-13",
-                "Win3.00 | Windows 3.0 | 1990-05-22",
-                "Win3.10_103 | Windows 3.1 | 1992-04-06",
-                "Win3.11_300 | Windows for Workgroups 3.11 | 1993-11-08",
-                "Win3.2_153 | Windows 3.2 | 1993-11-22",
-                "Win4.00_950 | Windows 95 | 1995-08-15",
-                "Win4.10_2222A | Windows 98 | 1998-05-15",
-                "Win4.90_3000 | Windows Me | 2000-06-19"
+                "2018-11-13 | NT_10.0_17763 | Windows Server 2019",
+                "2016-10-12 | NT_10.0_14393 | Windows Server 2016",
+                "2015-07-15 | NT_10.0_1909  | Windows 10",
+                "2013-10-18 | NT_6.3        | Windows RT 8.1",
+                "2013-10-17 | NT_6.3_9600   | Windows Server 2012 R2",
+                "2013-08-27 | NT_6.3_9600   | Windows 8.1",
+                "2012-10-26 | NT_6.2        | Windows RT",
+                "2012-09-04 | NT_6.2_9200   | Windows Server 2012",
+                "2012-08-01 | NT_6.2_9200   | Windows 8",
+                "2009-10-22 | NT_6.1_7601   | Windows Server 2008 R2",
+                "2009-07-22 | NT_6.1_7601   | Windows 7",
+                "2008-02-27 | NT_6.0_6003   | Windows Server 2008",
+                "2006-11-08 | NT_6.0_6002   | Windows Vista",
+                "2005-12-06 | NT_5.2_3790   | Windows Server 2003 R2",
+                "2005-04-25 | NT_5.2_3790   | Windows XP Pro x64",
+                "2003-04-24 | NT_5.2_3790   | Windows Server 2003",
+                "2002-11-00 | NT_5.1        | Windows XP Tablet PC",
+                "2002-00-00 | NT_5.1        | Windows XP Media Center",
+                "2001-08-24 | NT_5.1_2600   | Windows XP",
+                "2000-06-19 | Win4.90_3000  | Windows Me",
+                "1999-12-15 | NT_5.0_2195   | Windows 2000",
+                "1998-05-15 | Win4.10_2222A | Windows 98",
+                "1996-07-31 | NT_4.0_1381   | Windows NT 4.0",
+                "1995-08-15 | Win4.00_950   | Windows 95",
+                "1995-05-30 | NT_3.51_1057  | Windows NT 3.51",
+                "1994-09-21 | NT_3.5_807    | Windows NT 3.5",
+                "1993-11-22 | Win3.2_153    | Windows 3.2",
+                "1993-11-08 | Win3.11_300   | Windows for Workgroups 3.11",
+                "1993-07-27 | NT_3.1_528    | Windows NT 3.1",
+                "1992-04-06 | Win3.10_103   | Windows 3.1",
+                "1990-05-22 | Win3.00       | Windows 3.0",
+                "1989-03-13 | Win2.11       | Windows 2.11",
+                "1988-05-27 | Win2.10       | Windows 2.10",
+                "1987-12-09 | Win2.03       | Windows 2.03",
+                "1987-04-10 | Win1.04       | Windows 1.04",
+                "1986-08-21 | Win1.03       | Windows 1.03",
+                "1986-05-14 | Win1.02       | Windows 1.02",
+                "1985-11-20 | Win1.01       | Windows 1.0"
             ]
         }
 
