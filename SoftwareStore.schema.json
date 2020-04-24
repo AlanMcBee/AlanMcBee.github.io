@@ -1,6 +1,6 @@
 {
     "$schema": "https://json-schema.org/draft/2019-09/schema",
-    "$id": "https://alanmcbee.github.io/SoftwareStore-2020-03-19T11-08.schema.json",
+    "$id": "https://alanmcbee.github.io/SoftwareStore.schema.json",
     "$comment": "For the defaultSnippets, see https://code.visualstudio.com/docs/editor/userdefinedsnippets#_creating-your-own-snippets, https://code.visualstudio.com/api/language-extensions/snippet-guide, and https://code.visualstudio.com/docs/editor/userdefinedsnippets#_snippet-syntax",
     "title": "SoftwareStore: AlanM's software list",
     "description": "The SoftwareStore is the file that tracks all of the software that I might like to put on my system",
@@ -132,13 +132,7 @@
                     },
                     "additionalProperties": false
                 },
-                "web": {
-                    "type": "object",
-                    "properties": {
-                        "url": { "type": "string", "format": "uri" }
-                    },
-                    "additionalProperties": false
-                },
+                "web": { "$ref": "#/definitions/webSource" },
                 "appx": {
                     "type": "object",
                     "properties": {
@@ -157,6 +151,14 @@
             },
             "additionalProperties": false
         },
+        "webSource": {
+            "type": "object",
+            "properties": {
+                "url": { "type": "string", "format": "uri" }
+            },
+            "required": [ "url" ],
+            "additionalProperties": false
+        },
         "version": {
             "type": ["number", "string"],
             "pattern": "^(\\d+\\.){0,3}\\d+$"
@@ -167,9 +169,7 @@
                 "Windows": {
                     "type": "object",
                     "properties": {
-                        "version": {
-                            "$ref": "#/definitions/windowsVersion"
-                        },
+                        "version": { "$ref": "#/definitions/windowsVersion" },
                         "machine": {
                             "type": "string",
                             "enum": ["16b", "32b", "64b", "32b64b"]
@@ -182,9 +182,7 @@
                             "type": "string",
                             "enum": ["Home", "MultiPoint", "Essentials", "Small Business", "Storage", "Machine Learning", "Advanced", "Foundation", "Datacenter", "Essential Business", "Standard", "Enterprise", "Web", "Messaging"]
                         },
-                        "source": {
-                            "$ref": "#/definitions/sourceList"
-                        }
+                        "source": { "$ref": "#/definitions/sourceList" }
                     },
                     "required": ["edition"],
                     "additionalProperties": false
@@ -196,35 +194,49 @@
                             "type": "string",
                             "enum": ["ubuntu", "debian"]
                         },
-                        "version": {
-                            "$ref": "#/definitions/version"
-                        },
+                        "version": { "$ref": "#/definitions/version" },
                         "machine": {
                             "type": "string",
                             "enum": ["32b", "64b"]
                         },
-                        "source": {
-                            "$ref": "#/definitions/sourceList"
-                        }
+                        "source": { "$ref": "#/definitions/sourceList" }
                     },
                     "additionalProperties": false
                 },
                 "VisualStudio": {
                     "type": "object",
                     "properties": {
-                        "source": {
-                            "$ref": "#/definitions/sourceList"
-                        }
+                        "source": { "$ref": "#/definitions/sourceList" }
                     },
                     "additionalProperties": false
                 },
                 "VisualStudioCode": {
                     "type": "object",
                     "properties": {
-                        "source": {
-                            "$ref": "#/definitions/sourceList"
+                        "source": { "$ref": "#/definitions/sourceList" }
+                    },
+                    "additionalProperties": false
+                },
+                "Chromium": {
+                    "type": "object",
+                    "properties": {
+                        "browserExtension": {
+                            "type": "object",
+                            "properties": { 
+                                "source": { "$ref": "#/definitions/sourceList" } 
+                            },
+                            "additionalProperties": false
+                        },
+                        "progressiveWebApp": {
+                            "type": "object",
+                            "properties": { 
+                                "source": { "$ref": "#/definitions/webSource" } 
+                            },
+                            "additionalProperties": false
                         }
                     },
+                    "minProperties": 1,
+                    "maxProperties": 1,
                     "additionalProperties": false
                 }
             },
