@@ -20,7 +20,7 @@
                 },
                 "additionalProperties": false,
                 "defaultSnippets": [{
-                    "label": "New package",
+                    "label": "New package v20200502T1636",
                     "description": "Creates a new software package entry",
                     "body": [{
                         "package": {
@@ -36,11 +36,9 @@
             "type": "object",
             "properties": {
                 "name": { "type": "string" },
+                "productCode": { "type": "string" },
                 "sku": { "type": "string" },
-                "class": {
-                    "type": "string",
-                    "enum": ["unknown", "IDE", "Install", "Module", "SDK", "Security", "Shell", "Storage", "Suite", "Tool", "UserAgent"]
-                },
+                "class": { "type": "string", "enum": ["unknown", "Editor", "IDE", "Install", "Module", "SDK", "Security", "Shell", "Storage", "Suite", "Tool", "UserAgent"] },
                 "source": { "$ref": "#/definitions/sourceList" },
                 "description": {
                     "oneOf": [
@@ -63,10 +61,7 @@
                     "type": "array",
                     "items": { "$ref": "#/definitions/platformList" }
                 },
-                "subsystem": {
-                    "type": "string",
-                    "enum": ["CLI", "GUI", "WDF", "multiple"]
-                },
+                "subsystem": { "type": "string", "enum": ["CLI", "GUI", "WDF", "multiple"] },
                 "keywords": {
                     "type": "array",
                     "items": { "type": "string" }
@@ -89,6 +84,19 @@
                         "additionalProperties": false
                     },
                     "minItems": 1
+                },
+                "license": {
+                    "type": "object",
+                    "properties": {
+                        "type": "string", "enum": ["PublicDomain", "Permissive", "Copyleft", "Noncommercial", "Proprietary", "TradeSecret"],
+                        "proprietary": {
+                            "type": "string", "enum": ["Subscription", "Key"],
+                            "additionalProperties": false,
+                            "required": ["type"]
+                        },
+                        "additionalProperties": false,
+                        "required": ["type"]
+                    }
                 }
             },
             "required": ["name"],
@@ -161,7 +169,7 @@
         },
         "version": {
             "type": ["number", "string"],
-            "pattern": "^(\\d+\\.){0,3}\\d+$"
+            "pattern": "^(\\d+\\.){0,3}\\d+(-.+)?$"
         },
         "platformList": {
             "type": "object",
